@@ -1,0 +1,8 @@
+<% include partials/cabecalho %>
+<h1><%= cabecalho %></h1>
+<ul>
+	<% contacts.forEach(function(contact) { %>
+	<li><%= contact.nome %></li>
+	<% }); %>
+</ul>
+<% include partials/rodape %>
