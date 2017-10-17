@@ -1,0 +1,13 @@
+<% include partials/cabecalho %>
+<h1><%= cabecalho %></h1>
+<form action="/contatos" method="POST">
+	<p>Nome: <input type="text" name="nome"></p>
+	<p>Email: <input type="text" name="email"></p>
+	<input type="submit" value="OK">
+</form>
+<ul>
+	<% contacts.forEach(function(contact) { %>
+	<li><%= contact.nome %></li>
+	<% }); %>
+</ul>
+<% include partials/rodape %>
