@@ -1,0 +1,31 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="app">
+  <p>{{ message }}</p>
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: ''
+  },
+  mounted: function () {
+  	axios.get('/hello')
+	  .then(function (response) {
+	  	console.log('texto: ' + response.data.texto);
+	    app.message = response.data.texto;
+	  })
+	  .catch(function (error) {
+	    console.log(error);
+	  });
+  }
+})
+</script>
+</body>
+</html>
