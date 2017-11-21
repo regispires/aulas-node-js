@@ -1,0 +1,55 @@
+<% include partials/cabecalho %>
+<div id="app">
+<table border="1">
+	<tr>
+		<th>Nome</th>
+		<th>Email</th>
+		<th>Ações</th>
+	</tr>
+
+	<tr v-for="contato in contatos">
+		<td>{{ contato.nome }}</td>
+		<td>{{ contato.email }}</td>
+		<td><a v-bind:href="'/contatos/atualiza/'+ contato._id">Atualiza</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="#/" v-on:click="deleta(contato._id)">Deleta</a></td>
+	</tr>
+</table>
+</div>
+<p><a href="/contatos/novo">Novo contato</a>
+<a href="/logout">Logout</a></p>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    contatos: []
+  },
+  methods: {
+  	deleta: function(id) {
+  		console.log('id:' + id);
+	  	axios.delete('/contatos/' + id)
+	  		.then(function (response) {
+		  	console.log('contatos: ' + response.data);
+		    app.contatos = response.data;
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	}
+  },
+  mounted: function () {
+  	axios.get('/contatos')
+	  .then(function (response) {
+	  	console.log('contatos: ' + response.data);
+	    app.contatos = response.data;
+	  })
+	  .catch(function (error) {
+	    console.log(error);
+	  });
+  }
+})
+</script>
+
+<% include partials/rodape %>
