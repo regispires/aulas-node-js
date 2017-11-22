@@ -1,0 +1,126 @@
+<% include partials/cabecalho %>
+<div id="app">
+<table border="1" class="table table-bordered">
+<thead class="thead-dark">
+	<tr>
+		<th>Nome</th>
+		<th>Email</th>
+		<th>Ações</th>
+	</tr>
+</thead>
+<tbody>
+	<tr v-for="contato in contatos">
+		<td>{{ contato.nome }}</td>
+		<td>{{ contato.email }}</td>
+		<td><a href="#/" v-on:click="altera_process(contato._id)">Atualiza</a>&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="#/" v-on:click="deleta(contato._id)">Deleta</a></td>
+	</tr>
+</tbody>	
+</table>
+<p><a class="btn btn-primary" data-toggle="modal" data-target="#novoContatoModal">Novo contato</a><a class="btn btn-primary ml-2" href="#/" v-on:click="contadores()">Contador</a><a class="btn btn-primary ml-2" href="/logout">Logout</a></p>
+<% include modal_contador %>
+<% include modal_novo %>
+<% include modal_update %>
+</div>
+<script>
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    contatos: [],
+    contato: [],
+    contador: "",
+    contador2: "",
+    error: ""
+  },
+  methods: {
+  	deleta: function(id) {
+  		console.log('id:' + id);
+	  	axios.delete('/contatos/' + id)
+	  		.then(function (response) {
+		  	console.log('contatos: ' + response.data);
+		    app.contatos = response.data;
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	},
+  	altera_process: function(id) {
+  		console.log('id:' + id);
+	  	axios.get('/contatos/atualiza/' + id)
+	  		.then(function (response) {
+	  		$('#updateContatoModal').modal('toggle');
+		  	console.log('contatos: ' + response.data);
+		    app.contato = response.data;
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	},
+  	update: function(){
+  		var id = $('#updateContatoModal').find("input[name=id]").val()
+  		var nome = $('#updateContatoModal').find("input[name=nome]").val();
+  		var email = $('#updateContatoModal').find("input[name=email]").val();
+  		console.log(email);
+  		axios.post('/contatos/atualiza',{
+  			nome: nome,
+  			email: email,
+  			id: id
+  		})
+	  		.then(function (response) {
+		  	console.log('contatos: ' + response.data);
+		    app.contatos = response.data;
+		    $('#updateContatoModal').modal('toggle');
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	},
+  	contadores: function(){
+  		axios.get('/contatos/contador')
+	  		.then(function (response) {
+		  	console.log('contato1s: ' + response.data);
+		  	app.contador = response.data.contador;
+		  	app.contador2 = response.data.contador2;
+		    $('#contadorModal').modal('toggle');
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	},
+  	adiciona: function(){
+  		var nome = $('#novoContatoModal').find("input[name=nome]").val()
+  		var email = $('#novoContatoModal').find("input[name=email]").val()
+  		axios.post('/contatos/novo',{
+  			nome: nome,
+  			email: email
+  		})
+	  		.then(function (response) {
+		  	console.log('contatos: ' + response.data);
+		  	var error = response.data.error;
+		  	if (error == undefined){
+		    	app.contatos = response.data;
+		    	$('#novoContatoModal').modal('toggle');
+		  	}else{
+		  		app.error = response.data.error
+		  	}
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+  	}
+  },
+  mounted: function () {
+  	axios.get('/contatos')
+	  .then(function (response) {
+	  	console.log('contatos: ' + response.data);
+	    app.contatos = response.data;
+	  })
+	  .catch(function (error) {
+	    console.log(error);
+	  });
+  }
+})
+</script>
+
+<% include partials/rodape %>

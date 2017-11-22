@@ -1,0 +1,11 @@
+<table class="table table-bordered">
+
+<input type="hidden" v-if="contato" name="id" v-bind:value="contato._id">
+<tr>
+<td>Nome</td>
+<td><input type="text" v-if="contato" name="nome" v-bind:value="contato.nome"></td>
+</tr>
+<tr>
+	<td>Email</td>
+	<td><input v-if="contato" type="text" name="email" v-bind:value="contato.email"></p></td>
+</tr>
