@@ -1,0 +1,17 @@
+{
+  "name": "projeto03",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^2.5.7",
+    "express": "^4.16.1",
+    "nodemon": "^1.19.4"
+  }
+}
