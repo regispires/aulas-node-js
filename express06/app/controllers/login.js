@@ -16,7 +16,9 @@ module.exports = function(app) {
 	controller.processa_login = function(req, res) {
 		var usuario = req.body.usuario;
 		var hash_senha = hash(req.body.senha);
-		if (usuario == 'regis' && hash_senha == 'c365cb01c5b5595d0a330d97b025e3c4730823e2') {
+		
+		// senha: teste123
+		if (usuario == 'regis' && hash_senha == 'c365cb01c5b5595d0a330d97b025e3c4730823e2') { 
 			req.session.user = usuario;
 			res.redirect('/');
 		} else {
